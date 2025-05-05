@@ -8,17 +8,24 @@
 import SwiftUI
 
 struct ContentView: View {
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationView {
+            ZStack{
+                Color.green
+                    .edgesIgnoringSafeArea(.all)
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 24) {
+                        ForEach(mockSections) { section in
+                            SectionView(viewModel: section, items: section.entity) { item in
+                                TileView(viewModel: item)
+                            }
+                        }
+                        .padding()
+                    }
+                }
+            }
         }
-        .padding()
     }
 }
 
-#Preview {
-    ContentView()
-}
