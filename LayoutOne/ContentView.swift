@@ -8,24 +8,41 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var tiles: [TileViewModel] = []
+    @State var seacrhTerm = ""
+    
+    var filteredTilers: [TileViewModel] {
+        guard !tileSection.items.isEmpty else {return tileSection.items}
+        return tileSection.items.filter{$0.title.localizedStandardContains(seacrhTerm)}
+    }
     
     var body: some View {
-        NavigationView {
-            ZStack{
-                Color.green
+        NavigationStack {
+            ZStack(alignment: .top) {
+                
+                Color.backgroundSet
                     .edgesIgnoringSafeArea(.all)
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 24) {
-                        ForEach(mockSections) { section in
-                            SectionView(viewModel: section, items: section.entity) { item in
-                                TileView(viewModel: item)
-                            }
-                        }
-                        .padding()
-                    }
+                
+                VStack(spacing: 24) {
+                    SectionView(viewModel: savedTileSection, items: savedTileSection.items) { item in
+                        SavedTileView(viewModel: item)
                 }
+                        SectionView(viewModel: tileSection, items: filteredTilers) { item in
+                            TileView(viewModel: item)
+                    }
+
+                }
+                .searchable(text: $seacrhTerm)
             }
         }
+        
     }
 }
 
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+            .previewDevice("iPhone 14")
+    }
+}

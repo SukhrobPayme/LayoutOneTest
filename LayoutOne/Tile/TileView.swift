@@ -7,43 +7,40 @@
 
 import SwiftUI
 
-protocol TileViewState {
-    func addTileButton()
-}
 
 struct TileView: View {
     
     var viewModel: TileViewModel
-
+    
     var body: some View {
-        NavigationLink(
-            destination: Text("Tile ID: \(viewModel.id)"),
-            label: {
-                VStack(alignment: .leading, spacing: 8) {
-                    if let imageName = viewModel.imageURL {
-                        Image(systemName: imageName)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 40, height: 40)
-                            .foregroundColor(.blue)
-                    }
-                    
-                    Text(viewModel.title)
-                        .font(.headline)
-                        .foregroundColor(.primary)
-                    
-                    if let subtitle = viewModel.subtitle {
-                        Text(subtitle)
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                    }
-                }
+        RatioContainer{
+            Image(systemName: "document.fill")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(maxHeight: 89, alignment: .top)
+                .layoutPriority(1)
                 .padding()
-                .frame(width: 180, height: 140)
-                .background(Color.red)
-                .cornerRadius(12)
-                .shadow(color: .gray.opacity(0.3), radius: 5, x: 0, y: 3)
+            VStack(alignment: .center){
+                Text(viewModel.title)
+                    .font(.caption)
+                    .foregroundColor(.primary)
+                    .padding(.top, 7)
             }
+        }
+        .frame(width: 120, height: 120, alignment: .center)
+        .shadow(color: Color.gray.opacity(0.4), radius: 5, x: 0, y: 3)
+    }
+}
+
+struct TileView_Previews: PreviewProvider {
+    static var previews: some View {
+        TileView(
+            viewModel: TileViewModel(
+                title: "Мобильные операторы",
+                imageURL: "star.fill"
+            )
         )
+        .previewLayout(.sizeThatFits)
+        .padding()
     }
 }

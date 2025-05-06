@@ -7,15 +7,16 @@
 
 import Foundation
 
-final class SectionViewModel: Identifiable, ObservableObject {
+final class SectionViewModel<T: Identifiable>: Identifiable, ObservableObject {
     var id = UUID()
     @Published var title: String
-    @Published var entity: [TileViewModel]
+    @Published var items: [T]  
     
-    init(id: UUID = UUID(), title: String, entity: [TileViewModel]) {
+    init(id: UUID = UUID(), title: String, items: [T]) {
         self.id = id
         self.title = title
-        self.entity = entity
+        self.items = items
     }
 }
+
 
